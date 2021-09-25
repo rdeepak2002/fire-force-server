@@ -18,9 +18,6 @@ import java.nio.charset.StandardCharsets;
 
 @Service
 public class FCMInitializer {
-//  @Value("${app.firebase-configuration-file}")
-//  private String firebaseConfigPath;
-
   @Value("${app.firebase-admin-sdk}")
   private String firebaseAdminSDK;
 
@@ -41,7 +38,7 @@ public class FCMInitializer {
       }
     }
     catch (IOException e) {
-      System.out.println("Error: " + e.getMessage());
+      System.err.println("Error initializing Firebase application: " + e.getMessage());
     }
   }
 
