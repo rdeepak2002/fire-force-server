@@ -71,6 +71,8 @@ public class AppController {
 
     fireDeviceRepository.save(fireDevice);
 
+    // TODO: alert all necessary user devices about this (via firebase cloud messaging and notifications)
+
     // return a response
     return ResponseEntity.ok(fireDevice);
   }
