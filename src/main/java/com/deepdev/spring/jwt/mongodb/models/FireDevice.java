@@ -2,6 +2,7 @@ package com.deepdev.spring.jwt.mongodb.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Clock;
@@ -16,6 +17,7 @@ public class FireDevice {
 
   private LocalDateTime updatedAt;
 
+  @Indexed
   private GeoJsonPoint location;
 
   private String status;
