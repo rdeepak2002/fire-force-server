@@ -9,6 +9,8 @@ import com.deepdev.spring.jwt.mongodb.payload.response.MessageResponse;
 import com.deepdev.spring.jwt.mongodb.repository.FireDeviceRepository;
 import com.deepdev.spring.jwt.mongodb.repository.UserDeviceRepository;
 import com.deepdev.spring.jwt.mongodb.repository.UserRepository;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.MulticastMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -104,17 +105,33 @@ public class AppController {
 
     // alert all necessary user devices about this status update (via firebase cloud messaging and notifications)
     // only alert when status changes to "BAD" (from another status)
+    Map<String, String> notificationData = new HashMap<>();
+
+    notificationData.put("foo", "bar");
+
     if(status.equals(FireDevice.BAD_STATUS) && !status.equals(oldStatus)) {
       System.out.println("Alerting all user devices");
 
       List<UserDevice> userDevices = userDeviceRepository.findAll();
+      List<String> notificationTokens = new ArrayList<>();
 
-      for(UserDevice userDevice : userDevices) {
+      while(!userDevices.isEmpty()) {
+        UserDevice userDevice = userDevices.remove(0);
         String notificationToken = userDevice.getNotificationToken();
 
         if(notificationToken != null && !notificationToken.isEmpty()) {
+          notificationTokens.add(notificationToken);
+        }
+
+        // send batch of up to 10 messages
+        if(notificationTokens.size() == 10 || (!notificationTokens.isEmpty() && userDevices.isEmpty())) {
           try {
-            // TODO: send FCM message to this token
+            MulticastMessage fcmMessage = MulticastMessage.builder()
+                .putAllData(notificationData)
+                .addAllTokens(notificationTokens)
+                .build();
+
+            FirebaseMessaging.getInstance().sendMulticast(fcmMessage);
           }
           catch (Exception e) {
             System.err.printf("Error sending message to %s : %n", notificationToken);
