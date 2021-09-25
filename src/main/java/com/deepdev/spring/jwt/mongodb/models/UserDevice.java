@@ -1,9 +1,11 @@
 package com.deepdev.spring.jwt.mongodb.models;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Document(collection = "user_devices")
@@ -15,15 +17,15 @@ public class UserDevice {
 
   private LocalDateTime updatedAt;
 
+  @Indexed
   private String notificationToken;
 
   @DBRef
   private User user;
 
-  public UserDevice(String id, LocalDateTime createdAt, LocalDateTime updatedAt,
+  public UserDevice(LocalDateTime updatedAt,
       String notificationToken, User user) {
-    this.id = id;
-    this.createdAt = createdAt;
+    this.createdAt = LocalDateTime.now(Clock.systemUTC());
     this.updatedAt = updatedAt;
     this.notificationToken = notificationToken;
     this.user = user;

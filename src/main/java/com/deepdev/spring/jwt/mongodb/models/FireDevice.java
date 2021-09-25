@@ -10,16 +10,22 @@ import java.time.LocalDateTime;
 
 @Document(collection = "fire_devices")
 public class FireDevice {
+  public static final String GOOD_STATUS = "GOOD";
+  public static final String WARN_STATUS = "WARN";
+  public static final String BAD_STATUS = "BAD";
+
   @Id
   private String id;
 
   private LocalDateTime createdAt;
 
+  @Indexed
   private LocalDateTime updatedAt;
 
   @Indexed
   private GeoJsonPoint location;
 
+  @Indexed
   private String status;
 
   private String data;

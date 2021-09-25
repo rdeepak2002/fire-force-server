@@ -72,6 +72,9 @@ public class AuthController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+	  // make email lowercase
+    signUpRequest.setEmail(signUpRequest.getEmail().toLowerCase());
+
 		if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 			return ResponseEntity
 					.badRequest()
