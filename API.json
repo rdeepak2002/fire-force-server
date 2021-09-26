@@ -15,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"deviceId\": \"someUniqueIdForThisDevice\",\n    \"status\": \"BAD\",\n    \"latitude\": \"1.0\",\n    \"longitude\": \"2.0\",\n    \"data\": \"data\"\n}",
+							"raw": "{\n    \"deviceId\": \"Yellowstone NE\",\n    \"status\": \"GOOD\",\n    \"latitude\": \"-107\",\n    \"longitude\": \"43\",\n    \"data\": \"data\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -59,6 +59,39 @@
 								"api",
 								"v1",
 								"create_user_device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Fire Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/get_fire_devices?lat=11&lon=10&d=99999999999",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"get_fire_devices"
+							],
+							"query": [
+								{
+									"key": "lat",
+									"value": "11"
+								},
+								{
+									"key": "lon",
+									"value": "10"
+								},
+								{
+									"key": "d",
+									"value": "99999999999"
+								}
 							]
 						}
 					},
