@@ -155,7 +155,7 @@ public class AppController {
     notificationData.put("title", title);
     notificationData.put("message", message);
 
-    if(changedToGoodStatus || changedToWarnStatus || changedToBadStatus) {
+    if(!maybeFireDevice.isPresent() || changedToGoodStatus || changedToWarnStatus || changedToBadStatus) {
       System.out.println("Alerting all user devices");
 
       List<UserDevice> userDevices = userDeviceRepository.findAll();
