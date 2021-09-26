@@ -1,0 +1,70 @@
+{
+	"info": {
+		"_postman_id": "9ee5dfd6-8356-4f52-9a3a-785d7b392cde",
+		"name": "Fire Force App API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "API V1",
+			"item": [
+				{
+					"name": "Fire Status Update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"deviceId\": \"someUniqueIdForThisDevice\",\n    \"status\": \"BAD\",\n    \"latitude\": \"1.0\",\n    \"longitude\": \"2.0\",\n    \"data\": \"data\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/fire_status_update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"fire_status_update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User Device",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"notificationToken\": \"someFCMNotificationToken\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/create_user_device",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"create_user_device"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

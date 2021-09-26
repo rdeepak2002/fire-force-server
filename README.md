@@ -3,6 +3,9 @@
 ## Author
 Deepak Ramalingam
 
+## API
+To view the API endpoints, open the "API.json" file in Postman.
+
 ## Environment Variables
 - PORT (optional variable to specify port)
 - DB_URI (URI of MongoDB Atlas instance)
