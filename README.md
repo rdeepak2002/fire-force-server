@@ -6,6 +6,14 @@ Deepak Ramalingam
 ## API
 To view the API endpoints, open the "API.json" file in Postman.
 
+## GeoSpatial Indices
+
+Run the following in Mongo Shell to create GeoSpatial indices
+
+```shell
+db.fire_devices.ensureIndex({location:"2dsphere"});
+```
+
 ## Environment Variables
 - PORT (optional variable to specify port)
 - DB_URI (URI of MongoDB Atlas instance)

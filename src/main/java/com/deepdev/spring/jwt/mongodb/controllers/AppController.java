@@ -8,10 +8,13 @@ import com.deepdev.spring.jwt.mongodb.payload.request.FireStatusUpdateRequest;
 import com.deepdev.spring.jwt.mongodb.payload.response.MessageResponse;
 import com.deepdev.spring.jwt.mongodb.repository.FireDeviceRepository;
 import com.deepdev.spring.jwt.mongodb.repository.UserDeviceRepository;
-import com.deepdev.spring.jwt.mongodb.repository.UserRepository;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.MulticastMessage;
+import com.mongodb.client.model.geojson.Position;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
+import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,8 +32,22 @@ public class AppController {
   @Autowired UserDeviceRepository userDeviceRepository;
   @Autowired FireDeviceRepository fireDeviceRepository;
 
-  @GetMapping("/get_all_fire_devices")
-  public ResponseEntity<?> getAllFireDevices() {
+  @GetMapping("/get_fire_devices")
+  public ResponseEntity<?> getFireDevices(@RequestParam(required = false) String lat, @RequestParam(required = false) String lon, @RequestParam(required = false) String d) {
+    // check if query parameters are defined
+    if(lat != null && lon != null && d != null) {
+      // note: distance is in KM
+      try {
+        List<FireDevice> fireDevices = fireDeviceRepository.findByLocationNear(new Point(Double.parseDouble(lat), Double.parseDouble(lon)), new Distance(Double.parseDouble(d),
+            Metrics.KILOMETERS));
+        return ResponseEntity.ok(fireDevices);
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+        return ResponseEntity.badRequest().body(new MessageResponse("Error: Invalid latitude and longitude. Verify lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180"));
+      }
+    }
+    // otherwise return all devices
     List<FireDevice> fireDevices = fireDeviceRepository.findAll();
     return ResponseEntity.ok(fireDevices);
   }
