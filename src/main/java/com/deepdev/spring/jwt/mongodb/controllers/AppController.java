@@ -101,13 +101,13 @@ public class AppController {
     // check the status is valid and construct a message
     switch (status) {
       case FireDevice.GOOD_STATUS:
-        message = "There is no fire in the area.";
+        message = String.format("There is no fire in %s.", deviceId);
         break;
       case FireDevice.WARN_STATUS:
-        message = "There may be a fire in the area.";
+        message = String.format("There may be a fire in %s.", deviceId);
         break;
       case FireDevice.BAD_STATUS:
-        message = "There is a fire in the area.";
+        message = String.format("There is a fire in %s.", deviceId);
         break;
       default:
         return ResponseEntity.badRequest().body(new MessageResponse("Error: Invalid status"));
