@@ -29,6 +29,12 @@ public class AppController {
   @Autowired UserDeviceRepository userDeviceRepository;
   @Autowired FireDeviceRepository fireDeviceRepository;
 
+  @GetMapping("/get_all_fire_devices")
+  public ResponseEntity<?> getAllFireDevices() {
+    List<FireDevice> fireDevices = fireDeviceRepository.findAll();
+    return ResponseEntity.ok(fireDevices);
+  }
+
   @PostMapping("/create_user_device")
   public ResponseEntity<?> createUserDevice(@Valid @RequestBody
       CreateUserDeviceRequest createUserDeviceRequest) {
@@ -107,9 +113,30 @@ public class AppController {
     // only alert when status changes to "BAD" (from another status)
     Map<String, String> notificationData = new HashMap<>();
 
-    notificationData.put("foo", "bar");
+    boolean changedToWarnStatus = status.equals(FireDevice.WARN_STATUS) && !status.equals(oldStatus);
+    boolean changedToBadStatus = status.equals(FireDevice.BAD_STATUS) && !status.equals(oldStatus);
 
-    if(status.equals(FireDevice.BAD_STATUS) && !status.equals(oldStatus)) {
+    String title;
+
+    if(changedToBadStatus) {
+      title = "FIRE ALERT";
+    }
+    else if(changedToWarnStatus) {
+      title = "FIRE WARNING";
+    }
+    else {
+      title = "Fire Status Update";
+    }
+
+    notificationData.put("createdAt", fireDevice.getCreatedAt().toString());
+    notificationData.put("updatedAt", updatedAt.toString());
+    notificationData.put("location", location.toString());
+    notificationData.put("status", status);
+    notificationData.put("data", data);
+    notificationData.put("title", title);
+    notificationData.put("message", message);
+
+    if(changedToWarnStatus || changedToBadStatus) {
       System.out.println("Alerting all user devices");
 
       List<UserDevice> userDevices = userDeviceRepository.findAll();
