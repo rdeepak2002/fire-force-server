@@ -130,6 +130,7 @@ public class AppController {
     // only alert when status changes to "BAD" (from another status)
     Map<String, String> notificationData = new HashMap<>();
 
+    boolean changedToGoodStatus = status.equals(FireDevice.GOOD_STATUS) && !status.equals(oldStatus);
     boolean changedToWarnStatus = status.equals(FireDevice.WARN_STATUS) && !status.equals(oldStatus);
     boolean changedToBadStatus = status.equals(FireDevice.BAD_STATUS) && !status.equals(oldStatus);
 
@@ -153,7 +154,7 @@ public class AppController {
     notificationData.put("title", title);
     notificationData.put("message", message);
 
-    if(changedToWarnStatus || changedToBadStatus) {
+    if(changedToGoodStatus || changedToWarnStatus || changedToBadStatus) {
       System.out.println("Alerting all user devices");
 
       List<UserDevice> userDevices = userDeviceRepository.findAll();
