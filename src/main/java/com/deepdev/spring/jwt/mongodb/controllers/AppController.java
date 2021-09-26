@@ -10,6 +10,7 @@ import com.deepdev.spring.jwt.mongodb.repository.FireDeviceRepository;
 import com.deepdev.spring.jwt.mongodb.repository.UserDeviceRepository;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.MulticastMessage;
+import com.google.firebase.messaging.Notification;
 import com.mongodb.client.model.geojson.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
@@ -172,6 +173,7 @@ public class AppController {
         if(notificationTokens.size() == 10 || (!notificationTokens.isEmpty() && userDevices.isEmpty())) {
           try {
             MulticastMessage fcmMessage = MulticastMessage.builder()
+                .setNotification(Notification.builder().setTitle(title).setBody(message).build())
                 .putAllData(notificationData)
                 .addAllTokens(notificationTokens)
                 .build();
