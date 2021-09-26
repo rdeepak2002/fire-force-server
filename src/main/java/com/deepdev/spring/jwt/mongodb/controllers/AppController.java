@@ -11,7 +11,6 @@ import com.deepdev.spring.jwt.mongodb.repository.UserDeviceRepository;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.MulticastMessage;
 import com.google.firebase.messaging.Notification;
-import com.mongodb.client.model.geojson.Position;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
